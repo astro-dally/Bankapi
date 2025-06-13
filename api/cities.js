@@ -3,34 +3,24 @@ import path from "path"
 import { logger } from "../utils/logger"
 
 /**
- * API handler to search branches by bank code and branch name
+ * API handler to get cities for a specific bank
  * @param {object} req - The request object
  * @param {object} res - The response object
- * @returns {object} JSON response with matching branches
+ * @returns {object} JSON response with cities list
  */
 export default function handler(req, res) {
   const startTime = Date.now()
-  logger.info(`[API] Branch search request received: ${JSON.stringify(req.query)}`)
+  logger.info(`[API] Cities request received: ${JSON.stringify(req.query)}`)
 
   try {
-    const { bank, branch, limit = 20, page = 1 } = req.query
+    const { bank } = req.query
 
-    // Validate required parameters
     if (!bank) {
       logger.warn("[API] Missing bank param")
       return res.status(400).json({
         success: false,
         error: "Missing bank param",
         message: "Please provide a bank code using the bank parameter",
-      })
-    }
-
-    if (!branch) {
-      logger.warn("[API] Missing branch param")
-      return res.status(400).json({
-        success: false,
-        error: "Missing branch param",
-        message: "Please provide a branch name using the branch parameter",
       })
     }
 
@@ -50,41 +40,29 @@ export default function handler(req, res) {
     // Read and parse the bank data file
     const allBranches = JSON.parse(fs.readFileSync(filePath, "utf-8"))
 
-    // Filter branches by name
-    const matches = Object.values(allBranches).filter(
-      (b) => b.BRANCH && b.BRANCH.toLowerCase().includes(branch.toLowerCase()),
-    )
-
-    // Implement pagination
-    const pageInt = Number.parseInt(page)
-    const limitInt = Number.parseInt(limit)
-    const startIndex = (pageInt - 1) * limitInt
-    const endIndex = pageInt * limitInt
-    const paginatedResults = matches.slice(startIndex, endIndex)
+    // Extract unique cities
+    const cities = [
+      ...new Set(
+        Object.values(allBranches)
+          .map((branch) => branch.CITY)
+          .filter(Boolean),
+      ),
+    ].sort()
 
     const responseTime = Date.now() - startTime
-    logger.info(
-      `[API] Branch search completed in ${responseTime}ms. Found ${matches.length} results for bank: ${bank}, branch: ${branch}`,
-    )
+    logger.info(`[API] Cities request completed in ${responseTime}ms. Found ${cities.length} cities for bank: ${bank}`)
 
     return res.status(200).json({
       success: true,
-      count: matches.length,
-      data: paginatedResults,
-      pagination: {
-        total: matches.length,
-        page: pageInt,
-        limit: limitInt,
-        pages: Math.ceil(matches.length / limitInt),
-      },
+      count: cities.length,
+      data: cities,
       metadata: {
         bank: sanitizedBank,
-        query: branch,
         responseTime: `${responseTime}ms`,
       },
     })
   } catch (error) {
-    logger.error(`[API] Error in branch search: ${error.message}`)
+    logger.error(`[API] Error in cities request: ${error.message}`)
     return res.status(500).json({
       success: false,
       error: "Internal server error",
