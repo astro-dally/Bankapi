@@ -12,7 +12,8 @@ export default function handler(req, res) {
 
   let allBranches;
   try {
-    allBranches = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    const bankData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    allBranches = Object.values(bankData); // Convert the object values to an array
   } catch (err) {
     return res.status(500).json({ error: 'Invalid branch JSON format' });
   }
