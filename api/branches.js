@@ -1,94 +1,26 @@
-import fs from "fs"
-import path from "path"
-import { logger } from "../utils/logger"
+import fs from 'fs';
+import path from 'path';
 
-/**
- * API handler to search branches by bank code and branch name
- * @param {object} req - The request object
- * @param {object} res - The response object
- * @returns {object} JSON response with matching branches
- */
 export default function handler(req, res) {
-  const startTime = Date.now()
-  logger.info(`[API] Branch search request received: ${JSON.stringify(req.query)}`)
+  const { bank, branch } = req.query;
+  if (!bank || !branch) return res.status(400).json({ error: 'Missing bank or branch param' });
 
-  try {
-    const { bank, branch, limit = 20, page = 1 } = req.query
-
-    // Validate required parameters
-    if (!bank) {
-      logger.warn("[API] Missing bank param")
-      return res.status(400).json({
-        success: false,
-        error: "Missing bank param",
-        message: "Please provide a bank code using the bank parameter",
-      })
-    }
-
-    if (!branch) {
-      logger.warn("[API] Missing branch param")
-      return res.status(400).json({
-        success: false,
-        error: "Missing branch param",
-        message: "Please provide a branch name using the branch parameter",
-      })
-    }
-
-    // Sanitize bank code to prevent directory traversal
-    const sanitizedBank = bank.replace(/[^a-zA-Z0-9]/g, "")
-    const filePath = path.join(process.cwd(), "data", "banks", `${sanitizedBank}.json`)
-
-    if (!fs.existsSync(filePath)) {
-      logger.warn(`[API] Bank not found: ${sanitizedBank}`)
-      return res.status(404).json({
-        success: false,
-        error: "Bank not found",
-        message: `No data found for bank code: ${sanitizedBank}`,
-      })
-    }
-
-    // Read and parse the bank data file
-    const allBranches = JSON.parse(fs.readFileSync(filePath, "utf-8"))
-
-    // Filter branches by name
-    const matches = Object.values(allBranches).filter(
-      (b) => b.BRANCH && b.BRANCH.toLowerCase().includes(branch.toLowerCase()),
-    )
-
-    // Implement pagination
-    const pageInt = Number.parseInt(page)
-    const limitInt = Number.parseInt(limit)
-    const startIndex = (pageInt - 1) * limitInt
-    const endIndex = pageInt * limitInt
-    const paginatedResults = matches.slice(startIndex, endIndex)
-
-    const responseTime = Date.now() - startTime
-    logger.info(
-      `[API] Branch search completed in ${responseTime}ms. Found ${matches.length} results for bank: ${bank}, branch: ${branch}`,
-    )
-
-    return res.status(200).json({
-      success: true,
-      count: matches.length,
-      data: paginatedResults,
-      pagination: {
-        total: matches.length,
-        page: pageInt,
-        limit: limitInt,
-        pages: Math.ceil(matches.length / limitInt),
-      },
-      metadata: {
-        bank: sanitizedBank,
-        query: branch,
-        responseTime: `${responseTime}ms`,
-      },
-    })
-  } catch (error) {
-    logger.error(`[API] Error in branch search: ${error.message}`)
-    return res.status(500).json({
-      success: false,
-      error: "Internal server error",
-      message: "An unexpected error occurred while processing your request",
-    })
+  const filePath = path.join(process.cwd(), 'data', 'banks', `${bank}.json`);
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: `No branch info found for bank code: ${bank}` });
   }
+
+  let allBranches;
+  try {
+    allBranches = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  } catch (err) {
+    return res.status(500).json({ error: 'Invalid branch JSON format' });
+  }
+
+  const matches = allBranches.filter(b =>
+    typeof b.BRANCH === 'string' &&
+    b.BRANCH.toLowerCase().includes(branch.toLowerCase())
+  );
+
+  return res.status(200).json(matches);
 }
