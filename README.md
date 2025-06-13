@@ -1,8 +1,10 @@
-# Indian Bank IFSC API
+# 🇮🇳 Indian Bank IFSC API
 
 A robust API for searching Indian banks and their branches by IFSC codes, names, and other parameters.
 
-## Data Source
+---
+
+## 📦 Data Source
 
 This API uses data from the [Razorpay IFSC repository](https://github.com/razorpay/ifsc) and [Razorpay IFSC API](https://github.com/razorpay/ifsc-api/tree/master/data).
 
@@ -29,20 +31,20 @@ This API uses data from the [Razorpay IFSC repository](https://github.com/razorp
 
 ## API Endpoints
 
-### Search Banks
+### 🔍 Search Banks
 
-\`\`\`
+```
 GET /api/banks?q={query}&limit={limit}
-\`\`\`
+```
 
-Search for banks by name.
+**Query Parameters:**
 
-**Parameters:**
-- `q` (required): Search query string
-- `limit` (optional): Maximum number of results to return (default: 10)
+* `q` (required): Search query string
+* `limit` (optional): Max results (default: 10)
 
 **Example Response:**
-\`\`\`json
+
+```json
 {
   "success": true,
   "count": 2,
@@ -55,24 +57,26 @@ Search for banks by name.
     "limit": 10
   }
 }
-\`\`\`
+```
 
-### Search Branches
+---
 
-\`\`\`
+### 🏦 Search Branches
+
+```
 GET /api/branches?bank={bank_code}&branch={branch_name}&limit={limit}&page={page}
-\`\`\`
+```
 
-Search for branches of a specific bank by branch name.
+**Query Parameters:**
 
-**Parameters:**
-- `bank` (required): Bank code (e.g., "SBIN", "HDFC")
-- `branch` (required): Branch name to search for
-- `limit` (optional): Results per page (default: 20)
-- `page` (optional): Page number (default: 1)
+* `bank` (required): Bank code (e.g., "SBIN", "HDFC")
+* `branch` (required): Branch name
+* `limit` (optional): Results per page (default: 20)
+* `page` (optional): Page number (default: 1)
 
 **Example Response:**
-\`\`\`json
+
+```json
 {
   "success": true,
   "count": 5,
@@ -92,6 +96,7 @@ Search for branches of a specific bank by branch name.
       "SWIFT": null,
       "ISO3166": "IN-MH"
     }
+    }
   ],
   "pagination": {
     "total": 5,
@@ -104,21 +109,23 @@ Search for branches of a specific bank by branch name.
     "query": "mumbai"
   }
 }
-\`\`\`
+```
 
-### Get Branch by IFSC
+---
 
-\`\`\`
+### 🧾 Get Branch by IFSC
+
+```
 GET /api/ifsc?ifsc={ifsc_code}
-\`\`\`
+```
 
-Get details of a specific branch by its IFSC code.
+**Query Parameter:**
 
-**Parameters:**
-- `ifsc` (required): IFSC code of the branch
+* `ifsc` (required): IFSC code of the branch
 
 **Example Response:**
-\`\`\`json
+
+```json
 {
   "success": true,
   "data": {
@@ -145,107 +152,104 @@ Get details of a specific branch by its IFSC code.
     "bank_name": "CITI Bank"
   }
 }
-\`\`\`
+```
 
-### Get Cities for a Bank
+---
 
-\`\`\`
+### 🏙️ Get Cities for a Bank
+
+```
 GET /api/cities?bank={bank_code}
-\`\`\`
+```
 
-Get a list of all cities where a specific bank has branches.
+**Query Parameter:**
 
-**Parameters:**
-- `bank` (required): Bank code (e.g., "SBIN", "HDFC")
+* `bank` (required): Bank code
 
 **Example Response:**
-\`\`\`json
+
+```json
 {
   "success": true,
   "count": 3,
-  "data": [
-    "DELHI",
-    "KOLKATA",
-    "MUMBAI"
-  ],
+  "data": ["DELHI", "KOLKATA", "MUMBAI"],
   "metadata": {
     "bank": "CITI"
   }
 }
-\`\`\`
+```
 
-### Get States for a Bank
+---
 
-\`\`\`
+### 🗺️ Get States for a Bank
+
+```
 GET /api/states?bank={bank_code}
-\`\`\`
+```
 
-Get a list of all states where a specific bank has branches.
+**Query Parameter:**
 
-**Parameters:**
-- `bank` (required): Bank code (e.g., "SBIN", "HDFC")
+* `bank` (required): Bank code
 
 **Example Response:**
-\`\`\`json
+
+```json
 {
   "success": true,
   "count": 3,
   "data": [
-    {
-      "name": "DELHI",
-      "iso_code": "IN-DL"
-    },
-    {
-      "name": "MAHARASHTRA",
-      "iso_code": "IN-MH"
-    },
-    {
-      "name": "WEST BENGAL",
-      "iso_code": "IN-WB"
-    }
+    { "name": "DELHI", "iso_code": "IN-DL" },
+    { "name": "MAHARASHTRA", "iso_code": "IN-MH" },
+    { "name": "WEST BENGAL", "iso_code": "IN-WB" }
   ],
   "metadata": {
     "bank": "CITI"
   }
 }
-\`\`\`
+```
 
-## Error Handling
+---
 
-All API endpoints follow a consistent error response format:
+## ❌ Error Handling
 
-\`\`\`json
+All endpoints return consistent error formats:
+
+```json
 {
   "success": false,
   "error": "Error type",
   "message": "Human-readable error message"
 }
-\`\`\`
+```
 
-Common HTTP status codes:
-- `400`: Bad Request - Missing or invalid parameters
-- `404`: Not Found - Resource not found
-- `500`: Internal Server Error - Unexpected server error
+**Common Status Codes:**
 
-## Development
+* `400`: Bad Request (missing/invalid parameters)
+* `404`: Not Found (resource not found)
+* `500`: Internal Server Error (unexpected failure)
 
-### Installation
+---
 
-\`\`\`bash
+## 🛠️ Development
+
+### 📥 Installation
+
+```bash
 npm install
-\`\`\`
+```
 
-### Running the Development Server
+### 🚧 Start Development Server
 
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
-### Building for Production
+### 🚀 Build for Production
 
-\`\`\`bash
+```bash
 npm run build
 npm start
+```
 \`\`\`
 
 ## Deployment
@@ -254,4 +258,3 @@ This API is designed to be deployed on Vercel. Simply connect your GitHub reposi
 
 ## License
 
-This project is licensed under the MIT License.
