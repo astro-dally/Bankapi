@@ -1,0 +1,38 @@
+{
+  "ICBK0000001": {
+    "BANK": "Industrial and Commercial Bank of China",
+    "IFSC": "ICBK0000001",
+    "MICR": "400229256",
+    "BRANCH": "RTGS-HO",
+    "ADDRESS": "Unit 801,8th Floor,A Wing,One BKC,Plot No C 66,G Block,Bandra Kurla Complex,Bandra (E),Mumbai  400051",
+    "STATE": "MAHARASHTRA",
+    "CONTACT": "+912233155900",
+    "UPI": false,
+    "RTGS": true,
+    "CITY": "MUMBAI",
+    "CENTRE": "MUMBAI",
+    "DISTRICT": "MUMBAI",
+    "NEFT": true,
+    "IMPS": true,
+    "SWIFT": null,
+    "ISO3166": "IN-MH"
+  },
+  "ICBK00000SC": {
+    "BANK": "Industrial and Commercial Bank of China",
+    "IFSC": "ICBK00000SC",
+    "BRANCH": "MUMBAI",
+    "ADDRESS": "UNIT 801,8TH FLOOR,A WING,ONE BKC,PLOT NO C 66,G BLOCK,BANDRA KURLA COMPLEX,BANDRA (E),MUMBAI  400051",
+    "STATE": "MAHARASHTRA",
+    "MICR": null,
+    "CONTACT": "+912233155900",
+    "UPI": false,
+    "NEFT": true,
+    "CITY": "MUMBAI",
+    "CENTRE": "MUMBAI",
+    "DISTRICT": "MUMBAI",
+    "RTGS": false,
+    "IMPS": true,
+    "SWIFT": null,
+    "ISO3166": "IN-MH"
+  }
+}
