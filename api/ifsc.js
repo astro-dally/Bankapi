@@ -9,7 +9,7 @@ import banknames from "../data/banknames.json"
  * @param {object} res - The response object
  * @returns {object} JSON response with branch details
  */
-export default function handler(req, res) {
+export default function Handler(req, res) {
   const startTime = Date.now()
   logger.info(`[API] IFSC lookup request received: ${JSON.stringify(req.query)}`)
 

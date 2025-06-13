@@ -9,22 +9,22 @@ This API uses data from the [Razorpay IFSC repository](https://github.com/razorp
 ## Project Structure
 
 \`\`\`
-├── api/
-│   ├── banks.js      # Search banks by name
-│   ├── branches.js   # Search branches by bank code and branch name
-│   ├── cities.js     # Get cities for a specific bank
-│   ├── ifsc.js       # Get branch details by IFSC code
-│   └── states.js     # Get states for a specific bank
+├── pages/
+│   ├── index.js                # Home page with API documentation
+│   └── api/
+│       ├── banks.js            # Search banks by name
+│       ├── branches.js         # Search branches by bank code and branch name
+│       ├── cities.js           # Get cities for a specific bank
+│       ├── ifsc.js             # Get branch details by IFSC code
+│       └── states.js           # Get states for a specific bank
 ├── data/
-│   ├── banknames.json # Map of bank codes to bank names
-│   └── banks/        # JSON files for each bank with branch details
-│       ├── SBIN.json # State Bank of India branches
-│       ├── HDFC.json # HDFC Bank branches
-│       └── ...       # Other bank files
-├── utils/
-│   └── logger.js     # Logging utility
-├── middleware.js     # CORS and request logging middleware
-└── package.json
+│   ├── banknames.json          # Map of bank codes to bank names
+│   └── banks/                  # JSON files for each bank with branch details
+│       ├── SBIN.json           # State Bank of India branches
+│       ├── HDFC.json           # HDFC Bank branches
+│       └── ...                 # Other bank files
+├── next.config.js              # Next.js configuration
+└── package.json                # Project dependencies and scripts
 \`\`\`
 
 ## API Endpoints
@@ -52,7 +52,7 @@ Search for banks by name.
   ],
   "metadata": {
     "query": "hdfc",
-    "responseTime": "5ms"
+    "limit": 10
   }
 }
 \`\`\`
@@ -91,8 +91,7 @@ Search for branches of a specific bank by branch name.
       "IMPS": true,
       "SWIFT": null,
       "ISO3166": "IN-MH"
-    },
-    // More branches...
+    }
   ],
   "pagination": {
     "total": 5,
@@ -102,8 +101,7 @@ Search for branches of a specific bank by branch name.
   },
   "metadata": {
     "bank": "HDFC",
-    "query": "mumbai",
-    "responseTime": "8ms"
+    "query": "mumbai"
   }
 }
 \`\`\`
@@ -144,8 +142,7 @@ Get details of a specific branch by its IFSC code.
   "metadata": {
     "ifsc": "CITI0000001",
     "bank_code": "CITI",
-    "bank_name": "CITI Bank",
-    "responseTime": "3ms"
+    "bank_name": "CITI Bank"
   }
 }
 \`\`\`
@@ -172,8 +169,7 @@ Get a list of all cities where a specific bank has branches.
     "MUMBAI"
   ],
   "metadata": {
-    "bank": "CITI",
-    "responseTime": "4ms"
+    "bank": "CITI"
   }
 }
 \`\`\`
@@ -209,8 +205,7 @@ Get a list of all states where a specific bank has branches.
     }
   ],
   "metadata": {
-    "bank": "CITI",
-    "responseTime": "4ms"
+    "bank": "CITI"
   }
 }
 \`\`\`
@@ -252,6 +247,10 @@ npm run dev
 npm run build
 npm start
 \`\`\`
+
+## Deployment
+
+This API is designed to be deployed on Vercel. Simply connect your GitHub repository to Vercel and it will automatically deploy your API.
 
 ## License
 
