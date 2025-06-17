@@ -233,7 +233,7 @@ Try the API at: [https://bankapi-hazel.vercel.app](https://bankapi-hazel.vercel.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
 ## 🙏 Acknowledgements
 
@@ -243,7 +243,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 📞 Contact
 
-For questions or feedback, please open an issue on GitHub or contact the repository owner.
+For questions or feedback, please open an issue on GitHub
 
 ---
 
